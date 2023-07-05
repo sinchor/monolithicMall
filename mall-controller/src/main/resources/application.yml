@@ -1,0 +1,30 @@
+
+server:
+  port: 8088
+
+  max-http-request-header-size: 80KB
+
+
+####### Spring Boot Configuration ######
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/malldb?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=GMT%2B8
+    username: root
+    password: lxc120240366
+
+    hikari:
+      connection-timeout: 5000 #等待连接池分配连接的最大时长（毫秒），超时还没可用的连接则发生SQLException
+      auto-commit: true
+      maximum-pool-size: 5 # 5 connections only for testing
+  messages:
+    encoding: UTF-8
+    basename: messages
+
+
+####### MyBatis Configuration #########
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.mall.pojo
+

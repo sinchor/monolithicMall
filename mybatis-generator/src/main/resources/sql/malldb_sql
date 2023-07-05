@@ -1,0 +1,21 @@
+
+
+CREATE SCHEMA `malldb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+
+CREATE TABLE `malldb`.`users` (
+  `id` VARCHAR(64) NOT NULL COMMENT '主键id 用户id',
+  `username` VARCHAR(32) NOT NULL COMMENT '用户名',
+  `password` VARCHAR(64) NOT NULL COMMENT '加密后的密码',
+  `nickname` VARCHAR(32) NULL COMMENT '昵称',
+  `realname` VARCHAR(64) NULL COMMENT '真实姓名',
+  `face` VARCHAR(1024) NOT NULL COMMENT '头像',
+  `mobile` VARCHAR(32) NULL,
+  `email` VARCHAR(32) NULL,
+  `sex` INT NULL COMMENT '性别 1:男  0:女  2:保密',
+  `birthday` DATETIME NULL,
+  `created_time` DATETIME NOT NULL,
+  `updated_time` DATETIME NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COMMENT = '用户表';
