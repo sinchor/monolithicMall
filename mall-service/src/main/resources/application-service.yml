@@ -1,0 +1,5 @@
+
+app_config:
+  url_config:
+    default_face_url: http://localhost:8080/cdn/icon/default.png
+

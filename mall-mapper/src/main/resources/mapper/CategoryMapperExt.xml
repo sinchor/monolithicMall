@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.mapper.CategoryMapperExt">
+  <resultMap id="CategoryVOResultMap" type="com.mall.pojo.vo.CategoryVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="fatherId" jdbcType="INTEGER" property="fatherId"/>
+    <collection property="subCatList" ofType="com.mall.pojo.vo.SubCategoryVO">
+      <id column="subId" jdbcType="INTEGER" property="subId"/>
+      <result column="subName" jdbcType="VARCHAR" property="subName"/>
+      <result column="subType" jdbcType="INTEGER" property="subType"/>
+      <result column="subFatherId" jdbcType="INTEGER" property="subFatherId"/>
+    </collection>
+  </resultMap>
+
+  <select id="getSubCategories" parameterType="java.lang.Integer" resultMap="CategoryVOResultMap">
+    select
+      f.id as id,
+      f.`name` as `name`,
+      f.`type` as `type`,
+      f.father_id as fatherId,
+      c.id as subId,
+      c.`name` as subName,
+      c.`type` as subType,
+      c.father_id as subFatherId
+    from
+      category as f
+        left join
+      category as c
+      on
+        f.id = c.father_id
+    where
+      f.father_id = #{fatherId};
+  </select>
+  
+  <resultMap id="NewItemsVOResultMap" type="com.mall.pojo.vo.NewItemsVO">
+    <id column="rootCatId" jdbcType="INTEGER" property="rootCatId"/>
+    <result column="rootCatName" jdbcType="VARCHAR" property="rootCatName"/>
+    <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+    <result column="catImage" jdbcType="VARCHAR" property="catImage"/>
+    <result column="bgColor" jdbcType="VARCHAR" property="bgColor"/>
+    <collection property="simpleItemList" ofType="com.mall.pojo.vo.SimpleItemVO">
+      <id column="itemId" jdbcType="INTEGER" property="itemId"/>
+      <result column="itemName" jdbcType="VARCHAR" property="itemName"/>
+      <result column="itemUrl" jdbcType="VARCHAR" property="itemUrl"/>
+    </collection>
+  </resultMap>
+
+  <select id="getNewItems" parameterType="java.util.Map" resultMap="NewItemsVOResultMap">
+    SELECT
+      f.id as rootCatId,
+      f.`name` as rootCatName,
+      f.slogan as slogan,
+      f.cat_image as catImage,
+      f.bg_color as bgColor,
+      i.id as itemId,
+      i.item_name as itemName,
+      ii.url as itemUrl,
+      i.created_time as createdTime
+    FROM
+      category f
+        LEFT JOIN items i ON f.id = i.root_cat_id
+        LEFT JOIN items_img ii ON i.id = ii.item_id
+    WHERE
+      f.type = 1
+      AND
+      i.root_cat_id = #{paramMap.rootCatId}
+      AND
+      ii.is_main = 1
+    ORDER BY
+      i.created_time
+            DESC
+      LIMIT 0,#{paramMap.limit}
+  </select>
+</mapper>

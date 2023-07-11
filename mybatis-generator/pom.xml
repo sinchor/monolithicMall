@@ -46,7 +46,8 @@
                 <executions>
                     <execution>
                         <id>mybatis generator</id>
-                        <phase>package</phase>
+                        <!-- 避免package和install时执行插件，设置成deploy -->
+                        <phase>deploy</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>

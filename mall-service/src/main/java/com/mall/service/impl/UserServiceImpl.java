@@ -10,6 +10,7 @@ import com.mall.utils.CommonUtil;
 import org.apache.commons.lang3.time.DateUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +27,14 @@ public class UserServiceImpl implements UserService {
     final UsersMapper usersMapper;
     private Sid sid;
 
-    private static final String FACE_URL = "default_face.png";
+    private final String FACE_URL;
 
     @Autowired
-    public UserServiceImpl(UsersMapper usersMapper, Sid sid) {
+    public UserServiceImpl(UsersMapper usersMapper, Sid sid,
+                           @Value("${app_config.url_config.default_face_url}") String defaultFaceUrl) {
         this.usersMapper = usersMapper;
         this.sid = sid;
+        this.FACE_URL = defaultFaceUrl;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

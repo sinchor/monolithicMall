@@ -40,7 +40,18 @@
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
         -->
 
-        <table tableName="users"  domainObjectName="Users">
-        </table>
+        <table tableName="users"  domainObjectName="Users"/>
+        <table tableName="carousel" domainObjectName="Carousel"/>
+        <table tableName="category" domainObjectName="Category"/>
+        <table tableName="items" domainObjectName="Items"/>
+        <table tableName="items_comments" domainObjectName="ItemsComments"/>
+        <table tableName="items_img" domainObjectName="ItemsImg"/>
+        <table tableName="items_param" domainObjectName="ItemsParam"/>
+        <table tableName="items_spec" domainObjectName="ItemsSpec"/>
+        <table tableName="order_items" domainObjectName="OrderItems"/>
+        <table tableName="order_status" domainObjectName="OrderStatus"/>
+        <table tableName="orders" domainObjectName="Orders"/>
+        <table tableName="user_address" domainObjectName="UserAddress"/>
+
     </context>
 </generatorConfiguration>
