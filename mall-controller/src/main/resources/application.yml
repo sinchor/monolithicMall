@@ -37,3 +37,7 @@ mybatis:
 pagehelper:
   helper-dialect: mysql
 
+
+logging:
+  level:
+    com.mall.mapper: debug

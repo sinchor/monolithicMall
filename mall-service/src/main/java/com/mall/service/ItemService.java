@@ -49,4 +49,16 @@ public interface ItemService {
      * @return
      */
     public PagedGridResult queryAndPagingItemComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+    /**
+     * query product items according to keywords
+     * @param keyword
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult searchItems(String keyword, String sort, Integer page, Integer pageSize);
+
+    public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize);
 }

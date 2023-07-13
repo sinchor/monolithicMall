@@ -8,6 +8,7 @@ import com.mall.mapper.*;
 import com.mall.pojo.*;
 import com.mall.pojo.vo.CommentLevelCountsVO;
 import com.mall.pojo.vo.ItemCommentVO;
+import com.mall.pojo.vo.SearchItemsVO;
 import com.mall.service.ItemService;
 import com.mall.utils.DesensitizationUtil;
 import com.mall.utils.PagedGridResult;
@@ -108,6 +109,36 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return setPagedGridResult(voList);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(String keyword, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("keyword", keyword);
+        map.put("sort", sort);
+
+        return getPagedGridResult(page, pageSize, map);
+    }
+
+    private PagedGridResult getPagedGridResult(Integer page, Integer pageSize, Map<String, Object> map) {
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> searchItemsVOS = itemsMapper.searchItems(map);
+        PageHelper.clearPage();
+        return setPagedGridResult(searchItemsVOS);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new TreeMap<>();
+        map.put("catId", catId);
+        map.put("sort", sort);
+
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> searchItemsVOS = itemsMapper.searchItemsByThirdCat(map);
+        PageHelper.clearPage();
+        return setPagedGridResult(searchItemsVOS);
     }
 
     private PagedGridResult setPagedGridResult(List<?> list) {

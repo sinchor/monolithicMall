@@ -27,6 +27,7 @@ import java.util.Map;
 public class ItemsController {
     final ItemService itemService;
     final static Integer DEFAULT_COMMENT_SIZE = 10;
+    final static Integer DEFAULT_SEARCH_SIZE = 20;
 
     @Autowired
     public ItemsController(ItemService itemService) {
@@ -87,5 +88,54 @@ public class ItemsController {
         }
         PagedGridResult result = itemService.queryAndPagingItemComments(itemId, level, page, pageSize);
         return MallJSONResult.ok(result);
+    }
+
+    @Operation(summary = "搜索商品列表")
+    @GetMapping("/search")
+    public MallJSONResult search(@Parameter(required = true, description = "keywords")
+                                     @RequestParam(required = true) String keywords,
+                                 @Parameter(description = "sort method", required = false)
+                                 @RequestParam(required = false) String sort,
+                                 @Parameter(description = "current page", required = false)
+                                     @RequestParam(required = false) Integer page,
+                                 @Parameter(description = "comment record num per page", required = false)
+                                     @RequestParam(required = false) Integer pageSize){
+
+        if (StringUtils.isBlank(keywords)) {
+            return MallJSONResult.errorMsg(I18nMessage.message("item.error.keyword_null"));
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = DEFAULT_SEARCH_SIZE;
+        }
+
+        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
+        return MallJSONResult.ok(pagedGridResult);
+    }
+    @Operation(summary = "通过商品ID搜索商品列表")
+    @GetMapping("/catItems")
+    public MallJSONResult search(@Parameter(required = true, description = "item level")
+                                 @RequestParam(required = true) Integer catId,
+                                 @Parameter(description = "sort method", required = false)
+                                 @RequestParam(required = false) String sort,
+                                 @Parameter(description = "current page", required = false)
+                                 @RequestParam(required = false) Integer page,
+                                 @Parameter(description = "comment record num per page", required = false)
+                                 @RequestParam(required = false) Integer pageSize){
+
+        if (catId == null) {
+            return MallJSONResult.errorMsg(null);
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = DEFAULT_SEARCH_SIZE;
+        }
+
+        PagedGridResult pagedGridResult = itemService.searchItems(catId, sort, page, pageSize);
+        return MallJSONResult.ok(pagedGridResult);
     }
 }
