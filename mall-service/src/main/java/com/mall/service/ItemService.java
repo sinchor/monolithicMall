@@ -2,6 +2,7 @@ package com.mall.service;
 
 import com.mall.pojo.*;
 import com.mall.pojo.vo.CommentLevelCountsVO;
+import com.mall.pojo.vo.ShopcartVO;
 import com.mall.utils.PagedGridResult;
 
 import java.util.List;
@@ -61,4 +62,12 @@ public interface ItemService {
     public PagedGridResult searchItems(String keyword, String sort, Integer page, Integer pageSize);
 
     public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize);
+
+    /**
+     * query items in the shop cart according to specification ids.
+     * @param specIds
+     * @return
+     */
+    public List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
 }

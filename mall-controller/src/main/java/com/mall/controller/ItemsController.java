@@ -7,6 +7,7 @@ import com.mall.pojo.ItemsParam;
 import com.mall.pojo.ItemsSpec;
 import com.mall.pojo.vo.CommentLevelCountsVO;
 import com.mall.pojo.vo.ItemInfoVO;
+import com.mall.pojo.vo.ShopcartVO;
 import com.mall.service.ItemService;
 import com.mall.utils.MallJSONResult;
 import com.mall.utils.PagedGridResult;
@@ -137,5 +138,21 @@ public class ItemsController {
 
         PagedGridResult pagedGridResult = itemService.searchItems(catId, sort, page, pageSize);
         return MallJSONResult.ok(pagedGridResult);
+    }
+
+    // 用于用户长时间未登录网站，刷新购物车中的数据（主要是商品价格），类似京东淘宝
+    @Operation(summary = "根据商品规格ids查找最新的商品数据")
+    @GetMapping("/refresh")
+    public MallJSONResult refresh(
+            @Parameter(required = true)
+            @RequestParam String itemSpecIds) {
+
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return MallJSONResult.ok();
+        }
+
+        List<ShopcartVO> list = itemService.queryItemsBySpecIds(itemSpecIds);
+
+        return MallJSONResult.ok(list);
     }
 }

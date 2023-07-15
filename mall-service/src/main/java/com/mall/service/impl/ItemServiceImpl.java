@@ -9,6 +9,7 @@ import com.mall.pojo.*;
 import com.mall.pojo.vo.CommentLevelCountsVO;
 import com.mall.pojo.vo.ItemCommentVO;
 import com.mall.pojo.vo.SearchItemsVO;
+import com.mall.pojo.vo.ShopcartVO;
 import com.mall.service.ItemService;
 import com.mall.utils.DesensitizationUtil;
 import com.mall.utils.PagedGridResult;
@@ -18,9 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -139,6 +138,15 @@ public class ItemServiceImpl implements ItemService {
         List<SearchItemsVO> searchItemsVOS = itemsMapper.searchItemsByThirdCat(map);
         PageHelper.clearPage();
         return setPagedGridResult(searchItemsVOS);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<ShopcartVO> queryItemsBySpecIds(String specIds) {
+        String[] ids = specIds.split(",");
+        List<String> list = new ArrayList<>();
+        Collections.addAll(list, ids);
+        return itemsMapper.queryItemsBySpecIds(list);
     }
 
     private PagedGridResult setPagedGridResult(List<?> list) {
