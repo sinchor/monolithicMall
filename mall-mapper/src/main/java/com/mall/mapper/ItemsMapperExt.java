@@ -17,4 +17,6 @@ public interface ItemsMapperExt extends ItemsMapper{
     public List<SearchItemsVO> searchItemsByThirdCat(@Param("paramsMap") Map<String, Object> map);
 
     public List<ShopcartVO> queryItemsBySpecIds(@Param("paramsList") List specIdsList);
+
+    public int decreaseItemSpecStock(@Param("specId") String specId, @Param("pendingCounts") Integer pendingCounts);
 }

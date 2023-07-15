@@ -5,6 +5,12 @@ server:
   max-http-request-header-size: 80KB
 
 
+app_config:
+  url_config:
+    default_return_url: http://localhost:8088/orders/notifyMerchantOrderPaid
+    default_payment_url: http://localhost:8089
+
+
 ####### Spring Boot Configuration ######
 spring:
   datasource:
