@@ -1,5 +1,6 @@
 package com.mall.controller;
 
+import com.mall.config.BaseConfig;
 import com.mall.config.I18nMessage;
 import com.mall.pojo.Users;
 import com.mall.pojo.bo.UserBo;
@@ -24,7 +25,6 @@ import java.util.Locale;
 @RequestMapping("/passport")
 public class PassportController {
 
-    private static final String cookieName = "user";
 
     final UserService userService;
 
@@ -111,7 +111,7 @@ public class PassportController {
     @Operation(summary = "用户退出登录")
     @PostMapping("/logout")
     public MallJSONResult logout(String userId) {
-        CookieUtils.deleteCookie(httpServletRequest, httpServletResponse, cookieName);
+        CookieUtils.deleteCookie(httpServletRequest, httpServletResponse, BaseConfig.cookieName);
         // TODO remove shopcart
         // TODO remove token
         return MallJSONResult.ok();
@@ -123,7 +123,7 @@ public class PassportController {
 
         //set cookie
         String cookieString = JSONUtil.objectToJSONString(result);
-        CookieUtils.setCookie(httpServletRequest, httpServletResponse, cookieName,
+        CookieUtils.setCookie(httpServletRequest, httpServletResponse, BaseConfig.cookieName,
                 cookieString,true);
         return result;
     }
