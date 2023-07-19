@@ -12,6 +12,7 @@ import com.mall.pojo.vo.ItemCommentVO;
 import com.mall.pojo.vo.SearchItemsVO;
 import com.mall.pojo.vo.ShopcartVO;
 import com.mall.service.ItemService;
+import com.mall.service.utils.ServiceHelper;
 import com.mall.utils.DesensitizationUtil;
 import com.mall.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +109,7 @@ public class ItemServiceImpl implements ItemService {
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
 
-        return setPagedGridResult(voList);
+        return ServiceHelper.setPagedGridResult(voList);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -125,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page, pageSize);
         List<SearchItemsVO> searchItemsVOS = itemsMapper.searchItems(map);
         PageHelper.clearPage();
-        return setPagedGridResult(searchItemsVOS);
+        return ServiceHelper.setPagedGridResult(searchItemsVOS);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -138,7 +139,7 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page, pageSize);
         List<SearchItemsVO> searchItemsVOS = itemsMapper.searchItemsByThirdCat(map);
         PageHelper.clearPage();
-        return setPagedGridResult(searchItemsVOS);
+        return ServiceHelper.setPagedGridResult(searchItemsVOS);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -194,18 +195,6 @@ public class ItemServiceImpl implements ItemService {
         if (result != 1) {
             throw new RuntimeException("订单创建失败，原因：库存不足!");
         }
-    }
-
-    private PagedGridResult setPagedGridResult(List<?> list) {
-
-        PageInfo<?> pageInfo = new PageInfo<>(list);
-
-        PagedGridResult pagedGridResult = new PagedGridResult();
-        pagedGridResult.setPage(pageInfo.getPageNum());
-        pagedGridResult.setTotal(pageInfo.getPages());
-        pagedGridResult.setRecords(pageInfo.getTotal());
-        pagedGridResult.setRows(pageInfo.getList());
-        return pagedGridResult;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
